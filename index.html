@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Node File Uploader</title>
+	<style>
+		body {
+			background-color: grey;
+			color: whitesmoke;
+		}
+
+		button {
+			padding: 5px 10px;
+			width: max-content;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Node File Upload</h1>
+	<h2></h2>
+	<h3></h3>
+	<form id="uploadForm">
+		<input type="file" multiple id="files" name="files" accepts="image/*" />
+		<button>Upload</button>
+	</form>
+	<script>
+		const sendFiles = ""
+		const inputFiles = document.querySelector("#files")
+		document.querySelector("#uploadForm").addEventListener("submit", async function (e) {
+			e.preventDefault()
+
+			const files = inputFiles.files
+			const formData = new FormData()
+
+			Object.keys(files).forEach(function (key) {
+				formData.append(files[key].name, files[key])
+
+			})
+			const response = await fetch("http://localhost:3000/upload", {
+				method: "POST",
+				body: formData
+			})
+			const json = await response.json()
+			document.querySelector("h3").innerText = json.status
+			document.querySelector("h2").innerText = json.message
+			console.log(json)
+		})
+	</script>
+</body>
+
+</html>
